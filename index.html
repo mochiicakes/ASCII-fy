@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASCII-fy</title>
+  <meta name="description" content="Turn images, GIFs and short clips into ASCII art. Runs entirely in your browser.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <span class="brand">ASCII-fy</span>
+    <span class="file" id="fileName"></span>
+    <nav class="bar-actions">
+      <button type="button" id="openBtn">Open</button>
+      <button type="button" id="fullBtn" disabled title="Fullscreen (F)">Fullscreen</button>
+      <button type="button" id="panelBtn" aria-controls="panel" aria-expanded="true" title="Show or hide settings (H)">Hide settings</button>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <section class="stage" id="stage">
+      <div class="drop" id="drop" role="button" tabindex="0" aria-label="Open a file">
+        <pre class="drop-art" id="dropArt" aria-hidden="true"></pre>
+        <p class="drop-title">Drop an image, GIF or short clip</p>
+        <p class="drop-sub">or click to browse. Pasting works too.</p>
+        <button type="button" id="sampleBtn">Use a sample</button>
+      </div>
+      <canvas id="view" hidden></canvas>
+      <div class="stage-bar" id="stageBar" hidden>
+        <button type="button" id="playBtn" hidden>Pause</button>
+        <span id="info"></span>
+      </div>
+      <p class="status" id="status" role="status" hidden></p>
+      <div class="loading" id="loading" hidden></div>
+    </section>
+
+    <aside class="panel" id="panel" aria-label="Settings">
+      <section class="group">
+        <h2>Pattern</h2>
+        <div class="patterns" id="patterns"></div>
+        <label class="field" id="rampField" hidden>
+          <span>Characters, light to dense</span>
+          <input type="text" id="ramp" spellcheck="false" autocomplete="off">
+        </label>
+        <label class="field" id="textField" hidden>
+          <span>Text</span>
+          <input type="text" id="text" spellcheck="false" autocomplete="off">
+        </label>
+      </section>
+
+      <section class="group">
+        <h2>Detail</h2>
+        <label class="slider">
+          <span>Columns <output id="columnsOut"></output></span>
+          <input type="range" id="columns" min="20" max="400" step="1">
+        </label>
+      </section>
+
+      <section class="group">
+        <h2>Tone</h2>
+        <label class="slider">
+          <span>Brightness <output id="brightnessOut"></output></span>
+          <input type="range" id="brightness" min="-0.5" max="0.5" step="0.01">
+        </label>
+        <label class="slider">
+          <span>Contrast <output id="contrastOut"></output></span>
+          <input type="range" id="contrast" min="0.3" max="3" step="0.05">
+        </label>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="invert"> Invert</label>
+          <label class="check"><input type="checkbox" id="dither"> Dither</label>
+        </div>
+      </section>
+
+      <section class="group">
+        <h2>Color</h2>
+        <div class="seg" id="colorMode"></div>
+        <div class="themes" id="themes"></div>
+        <div class="pickers">
+          <label id="fgField"><input type="color" id="fg"> Text</label>
+          <label><input type="color" id="bg"> Background</label>
+        </div>
+      </section>
+
+      <section class="group">
+        <h2>Frame</h2>
+        <div class="seg" id="frame"></div>
+        <p class="hint">Screen fills your display edge to edge. Use it with Fullscreen or download it as a wallpaper.</p>
+      </section>
+
+      <section class="group">
+        <h2>Download</h2>
+        <div class="seg" id="format"></div>
+        <label class="field" id="sizeField">
+          <span>Size</span>
+          <select id="size"></select>
+        </label>
+        <p class="hint" id="dims"></p>
+        <button type="button" class="primary" id="downloadBtn" disabled>Download</button>
+      </section>
+
+      <button type="button" class="link" id="resetBtn">Reset settings</button>
+    </aside>
+  </main>
+
+  <input type="file" id="fileInput" accept="image/*,video/*,.gif" hidden>
+</body>
+</html>
